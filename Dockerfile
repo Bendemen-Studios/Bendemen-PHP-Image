@@ -7,24 +7,17 @@ ARG PHP_VERSION=8.4
 ENV PHP_VERSION=${PHP_VERSION}
 USER root
 
-# Build a matching Redis extension for the PHP runtime in the upstream image.
+# Install Redis for the selected PHP version from the same package repositories
+# as the upstream image. PECL is not guaranteed to be installed in that image.
 RUN set -eux; \
     case "${PHP_VERSION}" in 8.3|8.4|8.5) ;; *) echo "Unsupported PHP_VERSION=${PHP_VERSION}" >&2; exit 1 ;; esac; \
     command -v php${PHP_VERSION}; \
     php${PHP_VERSION} -v; \
-    php${PHP_VERSION} -r 'if (!extension_loaded("Zend OPcache")) { fwrite(STDERR, "OPcache is missing in the base image.\n"); exit(1); }'; \
     apt-get update; \
-    apt-get install -y --no-install-recommends ca-certificates curl autoconf make gcc g++ pkg-config; \
-    pecl_cmd="$(command -v pecl${PHP_VERSION} || command -v pecl || true)"; \
-    if [ -z "$pecl_cmd" ]; then echo "PECL is not installed in the upstream image; cannot compile Redis extension." >&2; exit 1; fi; \
-    "$pecl_cmd" install redis; \
-    rm -rf /var/lib/apt/lists/* /tmp/pear; \
-    redis_ini_dir="$(php${PHP_VERSION} -i | sed -n 's/^Scan this dir for additional .ini files => //p' | head -1)"; \
-    if [ -z "$redis_ini_dir" ] || [ "$redis_ini_dir" = "(none)" ]; then echo "Cannot determine PHP ini scan directory." >&2; exit 1; fi; \
-    mkdir -p "$redis_ini_dir"; \
-    printf 'extension=redis.so\n' > "$redis_ini_dir/30-redis.ini"; \
-    php${PHP_VERSION} -r 'if (!extension_loaded("redis")) { fwrite(STDERR, "Redis extension failed to load.\n"); exit(1); }'; \
-    php${PHP_VERSION} -r 'if (!extension_loaded("Zend OPcache")) { fwrite(STDERR, "OPcache is not loaded.\n"); exit(1); }'
+    apt-get install -y --no-install-recommends ca-certificates curl php${PHP_VERSION}-redis; \
+    php${PHP_VERSION} -r 'if (!extension_loaded("redis")) { fwrite(STDERR, "Redis extension failed to load.\\n"); exit(1); }'; \
+    php${PHP_VERSION} -r 'if (!extension_loaded("Zend OPcache")) { fwrite(STDERR, "OPcache is not loaded.\\n"); exit(1); }'; \
+    rm -rf /var/lib/apt/lists/*
 
 # Install WP-CLI using the same PHP version as the image.
 RUN set -eux; \
