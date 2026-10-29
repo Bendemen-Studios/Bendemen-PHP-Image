@@ -6,7 +6,7 @@
   },
   "exported_at": "2026-10-29T16:00:00+00:00",
   "name": "Bendemen WordPress Performance (Custom PHP + NPM SSL + Redis/Page Cache)",
-  "author": "Bendemen Product Development",
+  "author": "info@bendemen.nl",
   "description": "WordPress met Nginx/PHP-FPM, externe Pterodactyl-database, instelbaar domein en optionele automatische Nginx Proxy Manager proxy-host + Let’s Encrypt SSL via API. Inclusief WP-CLI installatie van Cache Enabler en optionele Redis Object Cache-configuratie.",
   "features": null,
   "docker_images": {
