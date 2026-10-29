@@ -10,9 +10,9 @@
   "description": "WordPress met Nginx/PHP-FPM, externe Pterodactyl-database, instelbaar domein en optionele automatische Nginx Proxy Manager proxy-host + Let’s Encrypt SSL via API. Inclusief WP-CLI installatie van Cache Enabler en optionele Redis Object Cache-configuratie.",
   "features": null,
   "docker_images": {
-    "Custom PHP 8.3 (build and publish first)": "ghcr.io/bendemen-studios/bendemen-wordpress:8.3-latest",
-    "Custom PHP 8.4 (build and publish first)": "ghcr.io/bendemen-studios/bendemen-wordpress:8.4-latest",
-    "Custom PHP 8.5 (build and publish first)": "ghcr.io/bendemen-studios/bendemen-wordpress:8.5-latest"
+    "Custom PHP 8.3": "ghcr.io/bendemen-studios/bendemen-wordpress:8.3-latest",
+    "Custom PHP 8.4": "ghcr.io/bendemen-studios/bendemen-wordpress:8.4-latest",
+    "Custom PHP 8.5": "ghcr.io/bendemen-studios/bendemen-wordpress:8.5-latest"
   },
   "file_denylist": [
     ".env",
