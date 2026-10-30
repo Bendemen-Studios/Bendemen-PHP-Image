@@ -48,10 +48,10 @@
       "name": "WordPress installatie",
       "description": "WordPress wordt bij de installatie in www/ geplaatst. Laat op true staan voor nieuwe servers.",
       "env_variable": "WORDPRESS",
-      "default_value": "true",
+      "default_value": "1",
       "user_viewable": true,
       "user_editable": true,
-      "rules": "required|boolean",
+      "rules": "required|in:0,1",
       "field_type": "text"
     },
     {
@@ -148,10 +148,10 @@
       "name": "WordPress page cache inschakelen",
       "description": "Schakelt WP_CACHE en de Cache Enabler page-cacheplugin in of uit. Zet op false om page caching uit te schakelen; Redis-objectcache blijft een aparte instelling.",
       "env_variable": "WP_CACHE_ENABLED",
-      "default_value": "true",
+      "default_value": "1",
       "user_viewable": true,
       "user_editable": true,
-      "rules": "required|boolean",
+      "rules": "required|in:0,1",
       "field_type": "text"
     },
     {
@@ -208,10 +208,10 @@
       "name": "Redis objectcache inschakelen",
       "description": "Schakelt Redis-configuratie in. Vereist een bereikbare Redis-server en PHP ext-redis in de gekozen Docker-image.",
       "env_variable": "WP_REDIS_ENABLED",
-      "default_value": "false",
+      "default_value": "0",
       "user_viewable": true,
       "user_editable": true,
-      "rules": "required|boolean",
+      "rules": "required|in:0,1",
       "field_type": "text"
     },
     {
@@ -361,7 +361,7 @@
       "default_value": "0",
       "user_viewable": true,
       "user_editable": true,
-      "rules": "required|boolean",
+      "rules": "required|in:0,1",
       "field_type": "text"
     },
     {
@@ -371,7 +371,7 @@
       "default_value": "0",
       "user_viewable": true,
       "user_editable": true,
-      "rules": "required|boolean",
+      "rules": "required|in:0,1",
       "field_type": "text"
     },
     {
@@ -381,7 +381,7 @@
       "default_value": "0",
       "user_viewable": true,
       "user_editable": true,
-      "rules": "required|boolean",
+      "rules": "required|in:0,1",
       "field_type": "text"
     },
     {
@@ -391,7 +391,7 @@
       "default_value": "1",
       "user_viewable": true,
       "user_editable": false,
-      "rules": "required|boolean",
+      "rules": "required|in:0,1",
       "field_type": "text"
     }
   ]
