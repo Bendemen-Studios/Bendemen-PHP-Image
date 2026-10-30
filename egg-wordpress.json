@@ -45,12 +45,62 @@
       "field_type": "text"
     },
     {
-      "name": "WordPress installatie",
-      "description": "WordPress wordt bij de installatie in www/ geplaatst. Laat op true staan voor nieuwe servers.",
-      "env_variable": "WORDPRESS",
-      "default_value": "1",
+      "name": "PHP-FPM workers (max children)",
+      "description": "Aantal PHP-FPM-workers. Standaard 10; maximaal 128. Hogere waarden vereisen voldoende RAM.",
+      "env_variable": "PHP_FPM_MAX_CHILDREN",
+      "default_value": "10",
       "user_viewable": true,
       "user_editable": true,
+      "rules": "required|integer|between:2,128",
+      "field_type": "text"
+    },
+    {
+      "name": "PHP memory limit",
+      "description": "PHP-geheugenlimiet per request.",
+      "env_variable": "PHP_MEMORY_LIMIT",
+      "default_value": "256M",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|regex:/^[0-9]+[KMG]$/i",
+      "field_type": "text"
+    },
+    {
+      "name": "PHP upload max filesize",
+      "description": "Maximale uploadgrootte.",
+      "env_variable": "PHP_UPLOAD_MAX_FILESIZE",
+      "default_value": "64M",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|regex:/^[0-9]+[KMG]$/i",
+      "field_type": "text"
+    },
+    {
+      "name": "PHP post max size",
+      "description": "Moet gelijk aan of groter dan upload max filesize zijn.",
+      "env_variable": "PHP_POST_MAX_SIZE",
+      "default_value": "64M",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|regex:/^[0-9]+[KMG]$/i",
+      "field_type": "text"
+    },
+    {
+      "name": "OPcache memory (MB)",
+      "description": "OPcache-geheugen.",
+      "env_variable": "OPCACHE_MEMORY",
+      "default_value": "128",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|integer|between:32,512",
+      "field_type": "text"
+    },
+    {
+      "name": "Enable PHP",
+      "description": "WordPress vereist PHP; laat aan staan.",
+      "env_variable": "PHP_STATUS",
+      "default_value": "1",
+      "user_viewable": true,
+      "user_editable": false,
       "rules": "required|in:0,1",
       "field_type": "text"
     },
@@ -72,6 +122,186 @@
       "user_viewable": false,
       "user_editable": false,
       "rules": "required|string|in:http,https",
+      "field_type": "text"
+    },
+    {
+      "name": "WordPress installatie",
+      "description": "WordPress wordt bij de installatie in www/ geplaatst. Laat op true staan voor nieuwe servers.",
+      "env_variable": "WORDPRESS",
+      "default_value": "1",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|in:0,1",
+      "field_type": "text"
+    },
+    {
+      "name": "WordPress sitetitel",
+      "description": "Titel voor de automatische eerste WordPress-installatie.",
+      "env_variable": "WP_SITE_TITLE",
+      "default_value": "WordPress",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:120",
+      "field_type": "text"
+    },
+    {
+      "name": "WordPress admin gebruikersnaam",
+      "description": "Beheerdersaccount voor automatische eerste installatie. Alleen gebruikt als WordPress nog niet is geïnstalleerd.",
+      "env_variable": "WP_ADMIN_USER",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|min:1|max:60",
+      "field_type": "text"
+    },
+    {
+      "name": "WordPress admin wachtwoord",
+      "description": "Sterk wachtwoord voor het eerste WordPress-beheerdersaccount. Bestaande installaties worden niet aangepast.",
+      "env_variable": "WP_ADMIN_PASSWORD",
+      "default_value": "",
+      "user_viewable": false,
+      "user_editable": true,
+      "rules": "nullable|string|min:12|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "WordPress admin e-mailadres",
+      "description": "E-mailadres voor het eerste WordPress-beheerdersaccount.",
+      "env_variable": "WP_ADMIN_EMAIL",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|email|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "Database host (Pterodactyl)",
+      "description": "Host/IP van de database uit Pterodactyl > Databases. Gebruik host:poort als nodig; niet localhost voor een externe DB.",
+      "env_variable": "WP_DB_HOST",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "Database naam",
+      "description": "Databasenaam die Pterodactyl heeft aangemaakt.",
+      "env_variable": "WP_DB_NAME",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:128",
+      "field_type": "text"
+    },
+    {
+      "name": "Database gebruiker",
+      "description": "Gebruikersnaam van de Pterodactyl-database.",
+      "env_variable": "WP_DB_USER",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:128",
+      "field_type": "text"
+    },
+    {
+      "name": "Database wachtwoord",
+      "description": "Wachtwoord van de Pterodactyl-databasegebruiker. Wordt verborgen weergegeven.",
+      "env_variable": "WP_DB_PASSWORD",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "Database tabelprefix (MySQL)",
+      "description": "WordPress MySQL/MariaDB-tabelprefix voor een nieuwe wp-config.php, bijvoorbeeld wp_ of klant1_. Moet overeenkomen met de prefix van bestaande tabellen; verandert bestaande tabellen niet.",
+      "env_variable": "WP_DB_PREFIX",
+      "default_value": "wp_",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|regex:/^[A-Za-z0-9_]+$/|max:32",
+      "field_type": "text"
+    },
+    {
+      "name": "WordPress page cache inschakelen",
+      "description": "Schakelt WP_CACHE en de Cache Enabler page-cacheplugin in of uit. Zet op false om page caching uit te schakelen; Redis-objectcache blijft een aparte instelling.",
+      "env_variable": "WP_CACHE_ENABLED",
+      "default_value": "1",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|in:0,1",
+      "field_type": "text"
+    },
+    {
+      "name": "Redis objectcache inschakelen",
+      "description": "Schakelt Redis-configuratie in. Vereist een bereikbare Redis-server en PHP ext-redis in de gekozen Docker-image.",
+      "env_variable": "WP_REDIS_ENABLED",
+      "default_value": "0",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|in:0,1",
+      "field_type": "text"
+    },
+    {
+      "name": "Redis host (optioneel)",
+      "description": "Host/IP van je Redis-server. Laat leeg om Redis-objectcache uit te schakelen. Redis moet bereikbaar zijn vanuit deze container.",
+      "env_variable": "WP_REDIS_HOST",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "Redis poort",
+      "description": "Redis TCP-poort; meestal 6379.",
+      "env_variable": "WP_REDIS_PORT",
+      "default_value": "6379",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|integer|between:1,65535",
+      "field_type": "text"
+    },
+    {
+      "name": "Redis wachtwoord",
+      "description": "Optioneel Redis AUTH-wachtwoord. Wordt verborgen weergegeven.",
+      "env_variable": "WP_REDIS_PASSWORD",
+      "default_value": "",
+      "user_viewable": false,
+      "user_editable": true,
+      "rules": "nullable|string|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "Redis database index",
+      "description": "Redis logical DB index (0-15). Gebruik bij voorkeur een aparte index voor deze site.",
+      "env_variable": "WP_REDIS_DATABASE",
+      "default_value": "0",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|integer|between:0,15",
+      "field_type": "text"
+    },
+    {
+      "name": "Redis prefix",
+      "description": "Unieke cache-prefix zodat meerdere WordPress-sites dezelfde Redis-server veilig kunnen delen.",
+      "env_variable": "WP_REDIS_PREFIX",
+      "default_value": "bendemen_wp_",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:80",
+      "field_type": "text"
+    },
+    {
+      "name": "WordPress debug mode",
+      "description": "Voor productie uit laten staan.",
+      "env_variable": "WP_DEBUG",
+      "default_value": "0",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|in:0,1",
       "field_type": "text"
     },
     {
@@ -145,226 +375,6 @@
       "field_type": "text"
     },
     {
-      "name": "WordPress page cache inschakelen",
-      "description": "Schakelt WP_CACHE en de Cache Enabler page-cacheplugin in of uit. Zet op false om page caching uit te schakelen; Redis-objectcache blijft een aparte instelling.",
-      "env_variable": "WP_CACHE_ENABLED",
-      "default_value": "1",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|in:0,1",
-      "field_type": "text"
-    },
-    {
-      "name": "Redis host (optioneel)",
-      "description": "Host/IP van je Redis-server. Laat leeg om Redis-objectcache uit te schakelen. Redis moet bereikbaar zijn vanuit deze container.",
-      "env_variable": "WP_REDIS_HOST",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:255",
-      "field_type": "text"
-    },
-    {
-      "name": "Redis poort",
-      "description": "Redis TCP-poort; meestal 6379.",
-      "env_variable": "WP_REDIS_PORT",
-      "default_value": "6379",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|integer|between:1,65535",
-      "field_type": "text"
-    },
-    {
-      "name": "Redis wachtwoord",
-      "description": "Optioneel Redis AUTH-wachtwoord. Wordt verborgen weergegeven.",
-      "env_variable": "WP_REDIS_PASSWORD",
-      "default_value": "",
-      "user_viewable": false,
-      "user_editable": true,
-      "rules": "nullable|string|max:255",
-      "field_type": "text"
-    },
-    {
-      "name": "Redis database index",
-      "description": "Redis logical DB index (0-15). Gebruik bij voorkeur een aparte index voor deze site.",
-      "env_variable": "WP_REDIS_DATABASE",
-      "default_value": "0",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|integer|between:0,15",
-      "field_type": "text"
-    },
-    {
-      "name": "Redis prefix",
-      "description": "Unieke cache-prefix zodat meerdere WordPress-sites dezelfde Redis-server veilig kunnen delen.",
-      "env_variable": "WP_REDIS_PREFIX",
-      "default_value": "bendemen_wp_",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|max:80",
-      "field_type": "text"
-    },
-    {
-      "name": "Redis objectcache inschakelen",
-      "description": "Schakelt Redis-configuratie in. Vereist een bereikbare Redis-server en PHP ext-redis in de gekozen Docker-image.",
-      "env_variable": "WP_REDIS_ENABLED",
-      "default_value": "0",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|in:0,1",
-      "field_type": "text"
-    },
-    {
-      "name": "WordPress admin gebruikersnaam",
-      "description": "Beheerdersaccount voor automatische eerste installatie. Alleen gebruikt als WordPress nog niet is geïnstalleerd.",
-      "env_variable": "WP_ADMIN_USER",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|min:1|max:60",
-      "field_type": "text"
-    },
-    {
-      "name": "WordPress admin wachtwoord",
-      "description": "Sterk wachtwoord voor het eerste WordPress-beheerdersaccount. Bestaande installaties worden niet aangepast.",
-      "env_variable": "WP_ADMIN_PASSWORD",
-      "default_value": "",
-      "user_viewable": false,
-      "user_editable": true,
-      "rules": "nullable|string|min:12|max:255",
-      "field_type": "text"
-    },
-    {
-      "name": "WordPress admin e-mailadres",
-      "description": "E-mailadres voor het eerste WordPress-beheerdersaccount.",
-      "env_variable": "WP_ADMIN_EMAIL",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|email|max:255",
-      "field_type": "text"
-    },
-    {
-      "name": "WordPress sitetitel",
-      "description": "Titel voor de automatische eerste WordPress-installatie.",
-      "env_variable": "WP_SITE_TITLE",
-      "default_value": "WordPress",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:120",
-      "field_type": "text"
-    },
-    {
-      "name": "Database host (Pterodactyl)",
-      "description": "Host/IP van de database uit Pterodactyl > Databases. Gebruik host:poort als nodig; niet localhost voor een externe DB.",
-      "env_variable": "WP_DB_HOST",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:255",
-      "field_type": "text"
-    },
-    {
-      "name": "Database naam",
-      "description": "Databasenaam die Pterodactyl heeft aangemaakt.",
-      "env_variable": "WP_DB_NAME",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:128",
-      "field_type": "text"
-    },
-    {
-      "name": "Database tabelprefix (MySQL)",
-      "description": "WordPress MySQL/MariaDB-tabelprefix voor een nieuwe wp-config.php, bijvoorbeeld wp_ of klant1_. Moet overeenkomen met de prefix van bestaande tabellen; verandert bestaande tabellen niet.",
-      "env_variable": "WP_DB_PREFIX",
-      "default_value": "wp_",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|regex:/^[A-Za-z0-9_]+$/|max:32",
-      "field_type": "text"
-    },
-    {
-      "name": "Database gebruiker",
-      "description": "Gebruikersnaam van de Pterodactyl-database.",
-      "env_variable": "WP_DB_USER",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:128",
-      "field_type": "text"
-    },
-    {
-      "name": "Database wachtwoord",
-      "description": "Wachtwoord van de Pterodactyl-databasegebruiker. Wordt verborgen weergegeven.",
-      "env_variable": "WP_DB_PASSWORD",
-      "default_value": "",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "nullable|string|max:255",
-      "field_type": "text"
-    },
-    {
-      "name": "PHP-FPM workers (max children)",
-      "description": "Aantal PHP-FPM-workers. Standaard 10; maximaal 128. Hogere waarden vereisen voldoende RAM.",
-      "env_variable": "PHP_FPM_MAX_CHILDREN",
-      "default_value": "10",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|integer|between:2,128",
-      "field_type": "text"
-    },
-    {
-      "name": "PHP memory limit",
-      "description": "PHP-geheugenlimiet per request.",
-      "env_variable": "PHP_MEMORY_LIMIT",
-      "default_value": "256M",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|regex:/^[0-9]+[KMG]$/i",
-      "field_type": "text"
-    },
-    {
-      "name": "PHP upload max filesize",
-      "description": "Maximale uploadgrootte.",
-      "env_variable": "PHP_UPLOAD_MAX_FILESIZE",
-      "default_value": "64M",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|regex:/^[0-9]+[KMG]$/i",
-      "field_type": "text"
-    },
-    {
-      "name": "PHP post max size",
-      "description": "Moet gelijk aan of groter dan upload max filesize zijn.",
-      "env_variable": "PHP_POST_MAX_SIZE",
-      "default_value": "64M",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|string|regex:/^[0-9]+[KMG]$/i",
-      "field_type": "text"
-    },
-    {
-      "name": "OPcache memory (MB)",
-      "description": "OPcache-geheugen.",
-      "env_variable": "OPCACHE_MEMORY",
-      "default_value": "128",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|integer|between:32,512",
-      "field_type": "text"
-    },
-    {
-      "name": "WordPress debug mode",
-      "description": "Voor productie uit laten staan.",
-      "env_variable": "WP_DEBUG",
-      "default_value": "0",
-      "user_viewable": true,
-      "user_editable": true,
-      "rules": "required|in:0,1",
-      "field_type": "text"
-    },
-    {
       "name": "Enable auto-update",
       "description": "Image-updater van upstream image; voor voorspelbare productie kun je dit uitschakelen.",
       "env_variable": "AUTOUPDATE_STATUS",
@@ -381,16 +391,6 @@
       "default_value": "0",
       "user_viewable": true,
       "user_editable": true,
-      "rules": "required|in:0,1",
-      "field_type": "text"
-    },
-    {
-      "name": "Enable PHP",
-      "description": "WordPress vereist PHP; laat aan staan.",
-      "env_variable": "PHP_STATUS",
-      "default_value": "1",
-      "user_viewable": true,
-      "user_editable": false,
       "rules": "required|in:0,1",
       "field_type": "text"
     }
